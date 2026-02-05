@@ -14,12 +14,25 @@ Partner (optional): -
 
 **File:** `LeanCourse25/Projects/HomotopyInvariance/BasicRewrite.lean`
 
-This project develops categorical infrastructure for homotopy invariance of singular homology:
+### 1. Categorical framework for natural transformations from representables (§General)
+- `evaluationFromPoint`: Given `pt : F(P)` for `F : D ⥤ Type`, constructs `Hom(P, -) ⟶ F` via coyoneda
+- `natTransFromInitial`: For initial `I`, constructs `const(F(I)) ⟶ F`
+- Uniqueness lemmas showing these are determined by their value at the distinguished object
 
-1. **General categorical framework** for the "evaluation from a point" pattern using Yoneda/coyoneda
-2. **Natural transformation `toTopObjMkNat`** sending 0-simplices to their geometric realization, with naturality derived categorically
-3. **Structures for homotopy** (`SimplicialHomotopy`, `MyHomotopy`) connecting simplicial and topological notions
-4. **The connecting map** `DeltaOneToContinuousI` relating `|Δ[1]|` to the topological interval `I`
+### 2. Topological homotopy reformulation
+- `MyHomotopy`: Category-friendly reformulation of `ContinuousMap.Homotopy` using `j_0, j_1 : X ⟶ X ⨯ I`
+- `ContinuousMap.Homotopy.toMyHomotopy`: Converts Mathlib homotopies to the categorical form
+
+### 3. Realization of 0-simplices via the categorical framework
+- `eval₀IsoPointsFunctor`: Isomorphism `eval₀ ≅ Hom(Δ[0], -)` via Yoneda
+- `toTopObjMkNat`: Natural transformation sending 0-simplices to points in `|X|`, constructed as composition with `evaluationFromPoint`
+- Uniqueness: `toTopObjMkNat_unique` shows this is the unique such map
+
+### 4. Building the simplicial homotopy
+- `toTopEquivUnitInt : |Δ[1]| ≃ₜ TopCat.I` — homeomorphism between realization and interval
+- `iota_I : Δ[1] ⟶ toSSet(I)` — adjoint transpose via `sSetTopAdj`
+- `connecting_map X : toSSet(X) ⨯ Δ[1] ⟶ toSSet(X × I)` — the bridge map
+- `topHomotopyToSimplicialHomotopy`: **Main theorem** — converts topological homotopy to `SimplicialHomotopy`
 
 ## What Is Not Included
 
