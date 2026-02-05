@@ -11,8 +11,8 @@ section General
 
 variable {C D : Type*} [Category C] [Category D]
 
-/-- The functor of points (generalized elements) represented by an object `T`.
-For `T = ⊤_ C`, this is the global sections functor. -/
+/-- The functor of points (generalized elements) represented by an object `T`,
+i.e., `Hom(T, -)`. -/
 abbrev pointsFunctor (T : C) : C ⥤ Type _ := coyoneda.obj (op T)
 
 /-- A functor `F` induces a map from `T`-points of `X` to `F(T)`-points of `F(X)`. -/
@@ -24,8 +24,8 @@ def pointsFunctorMap (F : C ⥤ D) (T : C) :
     dsimp [pointsFunctor]
     rw [← F.map_comp]
 
-/-- If `D` is a concrete category, any element `pt : F(P)` induces a natural transformation
-from `Hom(P, -)` (which is `pointsFunctor P`) to `F`. -/
+/-- Given a functor `F : D ⥤ Type` and an element `pt : F(P)`, we get a natural transformation
+`Hom(P, -) ⟶ F` via the Yoneda lemma. -/
 def evaluationFromPoint {D : Type*} [Category D] {F : D ⥤ Type _} {P : D} (pt : F.obj P) :
     pointsFunctor P ⟶ F :=
   CategoryTheory.coyonedaEquiv.symm pt
