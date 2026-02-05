@@ -50,13 +50,6 @@ lemma natTransFromInitial_app_self {C D : Type*} [Category C] [Category D]
   congr 1
   exact hI.hom_ext (hI.to I) (𝟙 I)
 
-/-- The component of `natTransFromInitial` at the initial object is the identity
-(in terms of the target category). -/
-lemma natTransFromInitial_app_self' {C D : Type*} [Category C] [Category D]
-    (F : C ⥤ D) (I : C) (hI : IsInitial I) :
-    (natTransFromInitial F I hI).app I = 𝟙 (F.obj I) := by
-  rw [natTransFromInitial_app_self, F.map_id]
-
 /-- **Uniqueness**: Any natural transformation from the constant functor at `F(I)` to `F`
 (where `I` is initial) that acts as identity at `I` equals `natTransFromInitial`. -/
 lemma natTransFromInitial_unique {C D : Type*} [Category C] [Category D]
@@ -68,10 +61,9 @@ lemma natTransFromInitial_unique {C D : Type*} [Category C] [Category D]
   funext X
   -- The component α.app X : F(I) ⟶ F(X) must equal F.map (hI.to X)
   have nat := α.naturality (hI.to X)
-  simp only [Functor.const_obj_obj, Functor.const_obj_map, Category.id_comp] at nat
   simp only [natTransFromInitial]
-  rw [hα] at nat
-  simp only [Category.id_comp] at nat
+  simp only [Functor.const_obj_obj, Functor.const_obj_map, Category.id_comp] at nat
+  rw [hα, Category.id_comp] at nat
   exact nat
 
 /-- Variant: Any natural transformation from the constant functor at `F(I)` to `F`
